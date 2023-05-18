@@ -11,7 +11,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Frases do dia',
       home: HomePage(),
       debugShowCheckedModeBanner: false,
@@ -27,6 +27,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var saidaResultado;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,10 +45,12 @@ class _HomePageState extends State<HomePage> {
             Padding(padding: EdgeInsets.only(top: 15)),
             Row(
               children: [
-                CircleAvatar(
-                  backgroundColor: Colors.blue,
-                  radius: 40,
-                  backgroundImage: AssetImage('images/pedra.png'),
+                GestureDetector(
+                  onTap: () {},
+                  child: Image.asset(
+                    GeraResultadoApp(),
+                    width: 80,
+                  ),
                 ),
               ],
               mainAxisAlignment: MainAxisAlignment.center,
@@ -59,7 +62,7 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.only(top: 20),
                 ),
                 Text(
-                  'Você perdeu :(',
+                  '$saidaResultado',
                   style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
                 ),
                 Padding(padding: EdgeInsets.only(top: 15)),
@@ -67,21 +70,38 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        setState(() {
+                          GeraResultadoApp();
+                          saidaResultado = RetornaResultado(GeraResultadoApp(),
+                              imagem: 'images/pedra.png');
+                        });
+                      },
                       child: Image.asset(
                         'images/pedra.png',
                         width: 80,
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        setState(() {
+                          GeraResultadoApp();
+                          saidaResultado = RetornaResultado(GeraResultadoApp(),
+                              imagem: 'images/papel.png');
+                        });
+                      },
                       child: Image.asset(
                         'images/papel.png',
                         width: 80,
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        setState(() {
+                          saidaResultado = RetornaResultado(GeraResultadoApp(),
+                              imagem: 'images/tesoura.png');
+                        });
+                      },
                       child: Image.asset(
                         'images/tesoura.png',
                         width: 80,
@@ -95,5 +115,23 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
+  }
+}
+
+GeraResultadoApp({var imagem}) {
+  List<String> imagens = [
+    'images/tesoura.png',
+    'images/papel.png',
+    'images/pedra.png'
+  ];
+
+  int numero = Random().nextInt(imagens.length);
+  String resultado = imagens[numero];
+  return resultado;
+}
+
+RetornaResultado(var resultadoApp, {imagem}) {
+  if (imagem == resultadoApp) {
+    return 'empate';
   }
 }
