@@ -27,7 +27,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var saidaResultado;
+  String _imagemApp = 'images/tesoura.png';
+  String? _resultadoJokenPo;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +50,7 @@ class _HomePageState extends State<HomePage> {
                 GestureDetector(
                   onTap: () {},
                   child: Image.asset(
-                    GeraResultadoApp(),
+                    '$_imagemApp',
                     width: 80,
                   ),
                 ),
@@ -62,7 +64,7 @@ class _HomePageState extends State<HomePage> {
                   padding: EdgeInsets.only(top: 20),
                 ),
                 Text(
-                  '$saidaResultado',
+                  '$_resultadoJokenPo',
                   style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
                 ),
                 Padding(padding: EdgeInsets.only(top: 15)),
@@ -72,9 +74,9 @@ class _HomePageState extends State<HomePage> {
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          GeraResultadoApp();
-                          saidaResultado = RetornaResultado(GeraResultadoApp(),
-                              imagem: 'images/pedra.png');
+                          _imagemApp = GeraResultadoApp();
+                          _resultadoJokenPo =
+                              RetornaResultado(_imagemApp, 'images/pedra.png');
                         });
                       },
                       child: Image.asset(
@@ -85,9 +87,9 @@ class _HomePageState extends State<HomePage> {
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          GeraResultadoApp();
-                          saidaResultado = RetornaResultado(GeraResultadoApp(),
-                              imagem: 'images/papel.png');
+                          _imagemApp = GeraResultadoApp();
+                          _resultadoJokenPo =
+                              RetornaResultado(_imagemApp, 'images/papel.png');
                         });
                       },
                       child: Image.asset(
@@ -98,8 +100,9 @@ class _HomePageState extends State<HomePage> {
                     GestureDetector(
                       onTap: () {
                         setState(() {
-                          saidaResultado = RetornaResultado(GeraResultadoApp(),
-                              imagem: 'images/tesoura.png');
+                          _imagemApp = GeraResultadoApp();
+                          _resultadoJokenPo = RetornaResultado(
+                              _imagemApp, 'images/tesoura.png');
                         });
                       },
                       child: Image.asset(
@@ -118,7 +121,7 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-GeraResultadoApp({var imagem}) {
+GeraResultadoApp() {
   List<String> imagens = [
     'images/tesoura.png',
     'images/papel.png',
@@ -130,8 +133,19 @@ GeraResultadoApp({var imagem}) {
   return resultado;
 }
 
-RetornaResultado(var resultadoApp, {imagem}) {
-  if (imagem == resultadoApp) {
-    return 'empate';
+RetornaResultado(var _imagemApp, imagemBotao) {
+  if (_imagemApp.toString().contains('tesoura') &&
+      imagemBotao.toString().contains('pedra')) {
+    return 'Você venceu!';
+  } else if (_imagemApp.toString().contains('papel') &&
+      imagemBotao.toString().contains('tesoura')) {
+    return 'Você venceu!';
+  } else if (_imagemApp.toString().contains('pedra') &&
+      imagemBotao.toString().contains('papel')) {
+    return 'Você venceu!';
+  } else if (_imagemApp == imagemBotao) {
+    return 'Empate!';
+  } else {
+    return 'Você perdeu!';
   }
 }
